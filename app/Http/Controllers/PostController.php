@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -25,7 +26,8 @@ class PostController extends Controller
         return view('posts.show', ['post' => $post]);
     }
     public function create(){
-        return view('posts.create');
+        $users = User::all();
+        return view('posts.create', ['users'=> $users]);
     }
     public function store(){
         // $data = request()->all();
