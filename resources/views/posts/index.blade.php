@@ -22,15 +22,15 @@
                     <tr>
                         <td class="px-4 py-2 font-medium whitespace-nowrap text-gray-900">{{ $post['id'] }}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-gray-700">{{$post['title']}}</td>
-                        <td class="px-4 py-2 whitespace-nowrap text-gray-700">{{ $post['posted_by'] }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-gray-700">{{ $post->user ? $post->user->name : "no user found" }}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-gray-700">{{ $post['created_at'] }}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-gray-700 space-x-2">
                             <a href="{{ route('posts.show', $post['id']) }}" class="inline-block px-4 py-1 text-xs font-medium text-white bg-green-600 rounded hover:bg-green-700">View</a>
                             <a href="{{ route('posts.edit', $post['id']) }}" class="inline-block px-4 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700">Edit</a>
-                            <form action="{{ route('posts.destroy', $post['id']) }}" method="POST" class="inline">
+                            <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="inline-block px-4 py-1 text-xs font-medium text-white bg-red-600 rounded hover:bg-red-700" onclick="return confirm('Are you sure you want to delete this post?')">Delete</button>
+                                <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
                         </td>
                     </tr>
@@ -70,5 +70,8 @@
                 </li>
             </ol>
         </div>
-    </div>
+        <!-- After your posts table or list -->
+        <div class="mt-4">
+            {{ $posts->links() }}
+        </div>
 </x-layout>

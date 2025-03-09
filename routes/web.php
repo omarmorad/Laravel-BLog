@@ -3,6 +3,7 @@
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CommentController;
 
 Route::get('/', function () {
     return view(view: 'welcome');
@@ -17,4 +18,5 @@ Route::put('posts/edit/{post}',[PostController::class,'update'])->name('posts.up
 Route::post('posts' , [PostController::class,'store'])->name('posts.store');
 Route::get('/posts/{post}',[PostController::class,'show'])->name('posts.show');
 Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
 

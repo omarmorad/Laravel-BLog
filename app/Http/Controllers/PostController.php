@@ -9,9 +9,7 @@ class PostController extends Controller
 {
     public function index()
     {
-      $posts = Post::all();
-    //   $laravelPosts = Post::where('title','first title')->get();
-    //   dd($laravelPosts);
+        $posts = Post::with('user')->paginate(10); // Change from all() to paginate(10)
         return view('posts.index', ['posts' => $posts]);
     }
 
@@ -37,57 +35,43 @@ class PostController extends Controller
             'title'=> $title,
             'description'=> $description,
             'user_id'=> $postCreator,
-            'created_at' => now(),
-            'updated_at' => now(),
+            // 'created_at' => now(),
+            // 'updated_at' => now(),
         ]);
         return to_route('posts.show', $post->id);
         
 
     }
-    public function edit($id){
-        $post= null;
-        $posts = [
-            [
-                'id' => 1, 
-                'title' => 'laravel', 
-                'description' => 'Laravel is a powerful PHP framework for web development',
-                'posted_by' => 'ahmed', 
-                'created_at' => '2025-03-08 12:47:00'
-            ],
-            [
-                'id' => 2, 
-                'title' => 'HTML', 
-                'description' => 'HTML is the standard markup language for creating web pages',
-                'posted_by' => 'mohamed', 
-                'created_at' => '2025-04-10 11:00:00'
-            ],
-            [
-                'id' => 3, 
-                'title' => 'CSS', 
-                'description' => 'CSS is the language used to style web pages',
-                'posted_by' => 'sara', 
-                'created_at' => '2025-04-15 09:30:00'
-            ],
-        ];
-        foreach ($posts as $p) {
-            if ($p['id'] == $id) {
-                $post = $p;
-                break;
-            }
+    public function edit($id)
+    {
+        $post = Post::find($id);
+
+        if (!$post) {
+            // Handle the case where the post is not found
+            return redirect()->route('posts.index')->with('error', 'Post not found.');
         }
-        // return $post;
-        return view('update',['post'=>$post]);
+
+        $users = User::all(); // Fetch all users
+
+        return view('update', ['post' => $post, 'users' => $users]);
     }
-    public function update(){
+    public function update(Request $request, $id)
+    {
+        $post = Post::findOrFail($id);
+        
+        $post->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'user_id' => $request->post_creator,
+        ]);
+        
         return to_route('posts.index');
-
-
-        // return to_route('posts.index');
     }
     public function destroy($id)
     {
-        // For now, we'll just redirect back with a success message
-        // Later you can add actual database deletion logic
+        $post = Post::findOrFail($id);
+        $post->delete();
+        
         return to_route('posts.index');
     }
 }

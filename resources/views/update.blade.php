@@ -6,14 +6,14 @@
             </div>
 
             <div class="px-6 py-4">
-                <form method="POST" action={{route('posts.update',$post['id'])}}>
+                <form method="POST" action="{{ route('posts.update', $post->id) }}">
                     @csrf
                     @method('PUT')
                     <!-- Title Input -->
                     <div class="mb-4">
                         <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
                         <input
-                        value={{$post['title']}}
+                            value="{{ $post->title }}"
                             name="title"
                             type="text"
                             id="title"
@@ -29,8 +29,7 @@
                             id="description"
                             rows="5"
                             class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 py-2 px-3 border"
-                            >   {{$post['description']}}</textarea>
-
+                        >{{ $post->description }}</textarea>
                     </div>
                     
                     <!-- Post Creator Select -->
@@ -41,8 +40,11 @@
                             id="creator"
                             class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 py-2 px-3 border bg-white"
                         >
-                            <option value="1">Ahmed</option>
-                            <option value="2">Mohamed</option>
+                            @foreach ($users as $user)
+                                <option value="{{ $user->id }}" {{ $post->user_id == $user->id ? 'selected' : '' }}>
+                                    {{ $user->name }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                     
@@ -59,4 +61,4 @@
             </div>
         </div>
     </div>
-</x-layout> 
+</x-layout>
