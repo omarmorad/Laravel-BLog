@@ -17,11 +17,7 @@ class PostController extends Controller
 
     public function show($id)
     {
-        // select * from posts where id = 1 limit 1 ;
-        $post = Post::find($id);    // Post::findOrFail($id);  
-         // select * from posts where id = 1  ;
-        // $anotherSyntax = Post::where('id', operator: $post->id)->get();4
-                // $anotherSyntax = Post::where('id', operator: $post->id)->first();
+        $post = Post::with('user')->find($id);
 
         return view('posts.show', ['post' => $post]);
     }
@@ -35,8 +31,16 @@ class PostController extends Controller
         // $description = $data['description'];
         $title = request()->title;
         $description = request()->description;
-        // dd($title, $description);
-        return to_route('posts.show', 1);
+        $postCreator = request()->post_creator;
+        //  dd($title, $description , $postCreator);
+        $post = Post::create([
+            'title'=> $title,
+            'description'=> $description,
+            'user_id'=> $postCreator,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        return to_route('posts.show', $post->id);
         
 
     }
