@@ -9,23 +9,18 @@ class PostController extends Controller
     public function index()
     {
       $posts = Post::all();
-      dd($posts);
+    //   $laravelPosts = Post::where('title','first title')->get();
+    //   dd($laravelPosts);
         return view('posts.index', ['posts' => $posts]);
     }
 
     public function show($id)
     {
-        $post = [
-            'id' => 1,
-            'title' => 'laravel',
-            'description' => 'laravel is a php framework',
-            'posted_by' => [
-                'name' => 'ahmed',
-                'email' => 'test@gmail.com',
-                'created_at' => '2025-03-08 12:47:00'
-            ],
-            'created_at' => '2025-03-08 12:47:00'
-        ];
+        // select * from posts where id = 1 limit 1 ;
+        $post = Post::find($id);    // Post::findOrFail($id);  
+         // select * from posts where id = 1  ;
+        // $anotherSyntax = Post::where('id', operator: $post->id)->get();4
+                // $anotherSyntax = Post::where('id', operator: $post->id)->first();
 
         return view('posts.show', ['post' => $post]);
     }
