@@ -67,7 +67,7 @@
                        <h3 class="text-lg font-medium text-gray-800">Email :- <span class="font-normal">{{$post['posted_by']['email']}}</span></h3>
                    </div>
                    <div>
-                       <h3 class="text-lg font-medium text-gray-800">Created At :- <span class="font-normal">2023-05-15</span></h3>
+                       <h3 class="text-lg font-medium text-gray-800">Created At :- <span class="font-normal">{{$post['posted_by']['created_at']}}</span></h3>
                    </div>
                </div>
            </div>
