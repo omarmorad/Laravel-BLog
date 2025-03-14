@@ -1,13 +1,14 @@
 <x-layout :title="'Create Post'">
     @if ($errors->any())
-    <div class="alert alert-danger">
+    <div role="alert" class="rounded-sm border-x-4 border-red-500 bg-red-50 p-4">
         <ul>
             @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
+                <li class="text-black font-medium">{{ $error }}</li>
             @endforeach
         </ul>
     </div>
 @endif
+
     <div class="max-w-3xl mx-auto">
         <div class="bg-white rounded-lg shadow overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200">
