@@ -27,6 +27,10 @@ class PostController extends Controller
         // $data = request()->all();
         // $title = $data['title'];
         // $description = $data['description'];
+        request()->validate([
+            'title' => ['required'],
+            'description' => ['required'],
+        ]);
         $title = request()->title;
         $description = request()->description;
         $postCreator = request()->post_creator;
