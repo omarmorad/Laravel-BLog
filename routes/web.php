@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use Inertia\Inertia;
+use App\Http\Controllers\CommentController;
 
 Route::resource('posts', controller: PostController::class)->middleware('auth');
 Route::resource('comments', CommentController::class);
@@ -12,7 +13,7 @@ Route::resource('comments', CommentController::class);
 Route::middleware(['auth'])->group(function () {
     Route::get('posts', [PostController::class, 'index'])->name('posts.index');
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
-    Route::get('/post/{post}', [PostController::class, 'show'])->name('posts.show');
+    Route::get('/post/{post:slug}', [PostController::class, 'show'])->name('posts.show');
 });
 
 Route::post('posts', [PostController::class, 'store'])->name('posts.store');
@@ -38,3 +39,6 @@ Route::middleware(['auth','admins-only'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// Add this with your other routes
+Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
