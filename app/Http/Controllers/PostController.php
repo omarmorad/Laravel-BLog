@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\StorePostRequest;
 class PostController extends Controller
 {
     public function index()
@@ -13,24 +13,36 @@ class PostController extends Controller
         return view('posts.index', ['posts' => $posts]);
     }
 
-    public function show($id)
+    public function show(Post $post)
     {
-        $post = Post::with('user')->find($id);
-
-        return view('posts.show', ['post' => $post]);
+        return view('posts.show', compact('post'));
     }
     public function create(){
         $users = User::all();
         return view('posts.create', ['users'=> $users]);
     }
-    public function store(){
+    public function store(StorePostRequest $request){
         // $data = request()->all();
         // $title = $data['title'];
         // $description = $data['description'];
-        request()->validate([
-            'title' => ['required'],
-            'description' => ['required'],
+
+        //1St Syntax of Validation
+    //     request()->validate([
+    //         'title' => ['required','min:3'],
+    //         'description' => ['required','min:10'],
+    //     ],
+    //     [
+    //         'title.required' => 'Title is required',
+    //         'title.min' => 'Title must be at least 3 characters',
+    //         'description.required' => 'Description is required',
+    //         'description.min' => 'Description must be at least 10 characters',
+    //     ]
+    // );
+        $request->validate([
+            'title' => ['required','min:3'],
+            'description' => ['required','min:10'],
         ]);
+     
         $title = request()->title;
         $description = request()->description;
         $postCreator = request()->post_creator;
@@ -59,7 +71,7 @@ class PostController extends Controller
 
         return view('update', ['post' => $post, 'users' => $users]);
     }
-    public function update(Request $request, $id)
+    public function update(StorePostRequest $request, $id)
     {
         $post = Post::findOrFail($id);
         
