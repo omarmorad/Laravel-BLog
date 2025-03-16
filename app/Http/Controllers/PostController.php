@@ -11,7 +11,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::with('user')->paginate(10); // Change from all() to paginate(10)
+        $posts = Post::with('user')->paginate(10); 
         return view('posts.index', ['posts' => $posts]);
     }
 
@@ -33,22 +33,21 @@ class PostController extends Controller
             'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ]);
     
-        // Create post data array
-        $data = [
-            'title' => $validated['title'],
-            'description' => $validated['description'],
-            'user_id' => $validated['post_creator'],
-        ];
+        // Create post with only the validated fields
+        $post = new Post();
+        $post->title = $validated['title']; // Slug will be auto-generated from title
+        $post->description = $validated['description'];
+        $post->user_id = $validated['post_creator'];
     
         // Add image if provided
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image');
+            $post->image = $request->file('image');
         }
     
-        // Create the post
-        $post = Post::create($data);
+        $post->save();
     
-        return redirect()->route('posts.show', $post->slug)->with('success', 'Post created successfully!');
+        // Redirect using ID instead of slug
+        return redirect()->route('posts.show', $post->id)->with('success', 'Post created successfully!');
     }
 
     public function update(Request $request, Post $post)

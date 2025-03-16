@@ -35,7 +35,7 @@
                         <td class="px-4 py-2 whitespace-nowrap">{{ $post->user ? $post->user->name : 'Unknown' }}</td>
                         <td class="px-4 py-2 whitespace-nowrap">{{ $post->created_at->format('Y-m-d') }}</td>
                         <td class="px-4 py-2 whitespace-nowrap">
-                            <a href="{{ route('posts.show', $post->slug) }}" class="inline-block px-4 py-1 text-xs font-medium text-white bg-green-600 rounded hover:bg-green-700">View</a>
+                            <a href="{{ route('posts.show', $post->id) }}" class="inline-block px-4 py-1 text-xs font-medium text-white bg-green-600 rounded hover:bg-green-700">View</a>
                             <a href="{{ route('posts.edit', $post['id']) }}" class="inline-block px-4 py-1 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700">Edit</a>
                             <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');" class="inline">
                                 @csrf
