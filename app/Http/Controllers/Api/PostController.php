@@ -12,8 +12,16 @@ class PostController extends Controller
     public function index(){
         return Post::all();
     }
+    
     public function show($id){
-        return Post::with('comments.user')->findOrFail($id);
+        $post = Post::findOrFail($id);
+        
+        return [
+            'id' => $post->id,
+            'title' => $post->title,
+            'description' => $post->description,
+            'created_at' => $post->created_at
+        ];
     }
 
     /**
