@@ -4,24 +4,23 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Resources\PostResource;
 use Illuminate\Http\Request;
 use App\Models\Post;
 
 class PostController extends Controller
 {
     public function index(){
-        return Post::all();
+    
+        $posts = Post::all();
+
+        return  PostResource::collection($posts);
     }
     
     public function show($id){
         $post = Post::findOrFail($id);
         
-        return [
-            'id' => $post->id,
-            'title' => $post->title,
-            'description' => $post->description,
-            'created_at' => $post->created_at
-        ];
+        return new PostResource($post);
     }
 
     /**
@@ -39,6 +38,6 @@ class PostController extends Controller
             'description' => $description,
             'user_id' => $postCreator,
         ]);
-        return $post;
+        return new PostResource($post);
     }
 }
