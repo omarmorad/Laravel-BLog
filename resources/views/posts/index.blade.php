@@ -11,6 +11,7 @@
                 <thead class="text-left">
                     <tr>
                         <th class="px-4 py-2 font-medium whitespace-nowrap text-gray-900">Id</th>
+                        <th class="px-4 py-2 font-medium whitespace-nowrap text-gray-900">Image</th>
                         <th class="px-4 py-2 font-medium whitespace-nowrap text-gray-900">Title</th>
                         <th class="px-4 py-2 font-medium whitespace-nowrap text-gray-900">Slug</th>
                         <th class="px-4 py-2 font-medium whitespace-nowrap text-gray-900">Posted By</th>
@@ -22,6 +23,13 @@
                     @foreach($posts as $post)
                     <tr>
                         <td class="px-4 py-2 whitespace-nowrap">{{ $post->id }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap">
+                            @if($post->image)
+                                <img src="{{ asset('storage/images/' . $post->image) }}" alt="Post thumbnail" class="w-20 h-20 object-cover rounded">
+                            @else
+                                <span class="text-gray-400">No image</span>
+                            @endif
+                        </td>
                         <td class="px-4 py-2 whitespace-nowrap">{{ $post->title }}</td>
                         <td class="px-4 py-2 whitespace-nowrap">{{ $post->slug }}</td>
                         <td class="px-4 py-2 whitespace-nowrap">{{ $post->user ? $post->user->name : 'Unknown' }}</td>

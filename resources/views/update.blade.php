@@ -16,7 +16,7 @@
             </div>
 
             <div class="px-6 py-4">
-                <form method="POST" action="{{ route('posts.update', $post->id) }}">
+                <form method="POST" action="{{ route('posts.update', $post->id) }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <!-- Title Input -->
@@ -40,6 +40,28 @@
                             rows="5"
                             class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 py-2 px-3 border"
                         >{{ $post->description }}</textarea>
+                    </div>
+                    
+                    <!-- Add this after the description field -->
+                    <!-- Remove the image upload field and current image display -->
+                    <!-- Keep other form fields intact -->
+                    <div class="mb-4">
+                        <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Post Image</label>
+                        @if($post->image)
+                            <div class="mb-2">
+                                <img src="{{ asset('storage/images/' . $post->image) }}" alt="Current image" class="w-32 h-32 object-cover rounded">
+                                <p class="text-sm text-gray-500 mt-1">Current image</p>
+                            </div>
+                        @endif
+                        
+                        <input
+                            type="file"
+                            name="image"
+                            id="image"
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 py-2 px-3 border"
+                            accept="image/*"
+                        >
+                        <p class="mt-1 text-sm text-gray-500">Upload a new image (optional)</p>
                     </div>
                     
                     <!-- Post Creator Select -->

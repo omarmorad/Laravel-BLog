@@ -16,7 +16,7 @@
             </div>
 
             <div class="px-6 py-4">
-                <form method="POST" action="/posts">
+                <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <!-- Title Input -->
                     <div class="mb-4">
@@ -40,17 +40,34 @@
                         ></textarea>
                     </div>
                     
+                    <!-- Image Upload Field -->
+                    <div class="mb-4">
+                        <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Post Image</label>
+                        <input
+                            type="file"
+                            name="image"
+                            id="image"
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 py-2 px-3 border"
+                            accept="image/*"
+                        >
+                        <p class="mt-1 text-sm text-gray-500">Upload a post image (optional)</p>
+                    </div>
+                    
                     <!-- Post Creator Select -->
                     <div class="mb-6">
-                        <label for="creator" class="block text-sm font-medium text-gray-700 mb-1">Post Creator</label>
-                        <select name="user_id" class="form-control">
+                        <label for="post_creator" class="block text-sm font-medium text-gray-700 mb-1">Post Creator</label>
+                        <select 
+                            name="post_creator" 
+                            id="post_creator"
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 py-2 px-3 border"
+                        >
                             @foreach($users as $user)
                                 <option value="{{ $user->id }}">{{ $user->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     
-                    <!-- Submit Button -->
+                    <!-- Make sure this section is present at the end of your form -->
                     <div class="flex justify-end">
                         <button
                             type="submit"
