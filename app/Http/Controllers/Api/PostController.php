@@ -13,8 +13,7 @@ class PostController extends Controller
         return Post::all();
     }
     public function show($id){
-        return Post::findOrFail($id);
-
+        return Post::with('comments.user')->findOrFail($id);
     }
 
     /**
@@ -23,8 +22,6 @@ class PostController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-
-
     public function store(StorePostRequest  $request){
         $title = request()->title;
         $description = request()->description;
@@ -35,6 +32,5 @@ class PostController extends Controller
             'user_id' => $postCreator,
         ]);
         return $post;
- 
     }
 }

@@ -9,18 +9,21 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function store(Request $request, Post $post)
+    public function store(Request $request, $postId)
     {
         $request->validate([
-            'content' => 'required',
-            'user_id' => 'required|exists:users,id',
+            'content' => 'required|min:3',
+            'user_id' => 'required|exists:users,id'
         ]);
 
-        $post->comments()->create([
-            'content' => $request->content,
-            'user_id' => $request->user_id,
-        ]);
-
-        return redirect()->route('posts.show', $post->slug);
+        $post = Post::findOrFail($postId);
+        
+        $comment = new Comment();
+        $comment->content = $request->content;
+        $comment->user_id = $request->user_id;
+        
+        $post->comments()->save($comment);
+        
+        return redirect()->back()->with('success', 'Comment added successfully!');
     }
 }
